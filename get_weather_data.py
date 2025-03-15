@@ -1,17 +1,24 @@
 import requests
 
-city_name = 'New Delhi'
-API_key = 'bb3808839c6dae4bd443865888b584a3'
-url = f"https://api.openweathermap.org/data/2.5/weather?q={city_name}&appid={API_key}&units=metric"
+api_key = 'bb3808839c6dae4bd443865888b584a3'
 
+user_input = input("Enter city : ")
 
-response = requests.get(url)
-if response.status_code == 200:
-    data = response.json()
-    print('city name is :',city_name)
-    print('weather is :',data['weather'][0]['description'])
-    print('current temperature is :',data['main']['temp'])
-    print('current temperature feels like is :',data['main']['feels_like'])
-    print('Humidity is :',data['main']['humidity'])
-    print('Pressure is :',data['main']['pressure'])
-    print('wind speed is :',data ['wind']['speed'] )
+weather_data = requests.get(f'https://api.openweathermap.org/data/2.5/weather?q={user_input}&appid={api_key}')
+
+if weather_data.json()['cod'] == '404':
+    print("No city found")
+else:
+    weather = weather_data.json()['weather'][0]['main']
+    temp = round(weather_data.json()['main']['temp'])
+    feels_Like = weather_data.json()['main']['feels_like']
+    humidity = weather_data.json()['main']['humidity']
+    wind = weather_data.json()['wind']['speed']
+    pressure = weather_data.json()['main']['pressure']
+    
+    print(f"The weather in {user_input} is: {weather}")
+    print(f"The temperature in {user_input} is: {temp}°F ")
+    print(f"The temperature feels like in {user_input} is: {feels_Like} ")
+    print(f"Humidity in {user_input} is : {humidity}")
+    print(f"wind speed in {user_input} is : {wind}")
+    print(f"pressure in {user_input} is :{pressure}")
